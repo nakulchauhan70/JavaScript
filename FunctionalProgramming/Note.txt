@@ -1,0 +1,309 @@
+# FunctionalProgramming
+
+Functions	
+
+1. What is Fucntion ?
+Ans:  units of computation (eg. takes something gives something)
+
+2. Function Declaration
+Ans: const a = compute(3,4)
+	  
+	 function compute(x, y) {
+	 	return x+y;
+	 }
+
+	 console.log(a);	//7
+
+3. Function Input & Output: Parameters
+Ans: function compute(x, y) {
+	
+	 }
+
+	 console.log(compute(2, 3, 4))
+
+4. Fucntion Invocation
+Ans: function compute(x, y) {
+		return x + y;
+	 }
+
+	 const a = compute()
+
+	 // 1st way
+	 const b = new compute();	// function constructor
+	 console.log(b);			// compute {}
+
+	 // 2nd way
+	 const c = compute.call(null, 1, 2, 3)
+	 console.log(c);			// 3
+
+	 // 3rd way
+	 const d = compute.apply(null, [1, 2, 3])
+	 console.log(d);			// 3
+
+	 IMP - Functions can be invoked with more or fewer parameters than declared in its definition
+	 	   The extra parameters are ignored while the missing ones are set to undefined
+
+5. Hoisting
+Ans:
+	Functions (and variables defined with 'var') are put into the memory during the compilation phase. 
+	This way, these functions can be executed from anywhere, even in the place before the actual definition.
+
+6. Function Expression
+Ans: 
+	Anonymous function expression
+
+	 const compute = function(x, y) {
+	 	return x+y;
+	 }
+
+	 const a = compute(3,4)
+	 console.log(a);	//7			- this statement won't work at the very first line
+
+
+	Named function expression 
+
+	 const compute = function calculate(x, y) {
+	 	return x+y;
+	 }
+
+	 const a = compute(3,4)
+	 console.log(a);	//7
+
+
+	IIFE - Immediately Invoked Function Expression
+
+	const a = (function(x, y) {
+					return x + y;
+			   })(2, 8)
+
+	console.log(a);	//10
+
+7. Arrow Function
+Ans: 
+	const compute = (x, y) => { return x + y; } OR
+	const compute = (x, y) =>  x + y
+
+	const a = compute(3,4)
+	console.log(a);	//7
+
+8. In JS Functions are objects
+Ans:
+	const person = {
+		name: 'Nakul'
+		age: '24'
+	}
+
+	fuunction displayName() {
+		return this.name;
+	}
+
+	const a = displayName.call(person);
+
+	console.log(a);	//Nakul
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Referential Transparency
+
+An expression is called referential transparency if it can be replaced with it's value without the impact on program's behaviour.
+
+1. Expression
+Ans: A combination of constants, variables, operators and functions that is interpreted and computed to 	 produce another value
+
+	 const expression1 = 1 + 2;
+	 const expression2 = expression1 + 20;
+	 const expression3 = (1 * (2 + 3)) * expression1 + 20;
+
+2. Value
+Ans: - the monetry worth of something
+	 - relative worth, utility, or importance
+	 - a numerical quantity that is assigned or determinedby calculation or measurement
+
+	 Values are sementacally transparent. Values are meant to be availableto you, open for you to see them.
+
+3. Transparent
+Ans: - free from pretense or deceit
+	 - easily detected or seen through
+	 - readily understood
+
+4. Referential
+Ans: of containing, or constituting a reference
+	 especially : pointing to or involving a referent
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Side effects & Pure Functions
+
+A function is a computaion with an input and output.
+
+const compute = (x, y) => x + y;
+console.log(compute(3, 4));
+
+1. Side Effects
+Ans: A side effect is a change of system stateor observable interaction with outside world that occurs	 	  during the calculation of a result.
+
+	Examples
+	a. A common side effect is generate output beyond the return value
+
+	   const compute = (x, y) {
+		   const r = x + y;
+		   console.log(r);
+
+		   return r;
+	   }
+
+	b. Setters are the another example of side effect; they change the object's internal state
+
+	   class Person {
+		   constructor(name, age) {
+			   this.name = name;
+			   this.age = age;
+		    }
+
+			changeAge(value) {
+				this.age = value;
+			}
+		}
+
+		const p = new Person("Nakul", 18);
+		p.changeAge(24)
+		concole.log(p)
+
+	c. IO operations, database access or HTTP requests are another example of side effects.
+
+		const doRequest = () => {
+			return HTTP.get("https://google.com.in/anything");
+		}
+
+	Problems
+	a. primary source of complexity in software
+	b. hidden inside the function's body and not captured by it's signature
+	c. may break compositional nature of fucntions
+
+
+2. Pure Functions
+Ans: Pure functions produce the same output for the same inputs and there are no side-effects.
+     It's a computation that is only influenced by it's input and that only influences it's output.
+
+     Examples
+     a. Functions returning a constant values
+
+     	const hello = () => "Hello";
+
+     b. A greeting function
+
+        const greet = (name) => 'Hello, ${name}';
+        console.log(greet("nakul"));				//Hello, nakul
+
+
+     c. But, a function returning the current date is NOT pure
+
+     	const today = () => new Date();
+     	console.log(today())
+
+     d. Arithmetic calculations
+
+     	const compute = (x, y) => x * y;
+
+     e. Buil-in JS Array operations - 'slice' and 'splice': both functions do the same thing, but slice is
+        Pure function ehile splice is unpure
+
+        const arr = [0, 1, 2, 3, 4, 5];
+        const r = arr.slice(2, 5);
+
+        console.log(r); 		// [2, 3, 4, 5]
+
+        'splice' mutates it's input parameter, the array is changed for good, that's an observable effect
+
+        const arr = [0, 1, 2, 3, 4, 5];
+        arr.splice(0, 1)
+        arr.splice(0, 1)
+        arr.splice(0, 1)
+
+        console.log(arr)
+
+
+      Mathematical Functions
+      Pure functions: what in mathematics is called just functions.
+      Pure functions: a way of saying "function in mathematical sense"
+
+      mathematical functions aren't series of steps that executes, thus they cannot affect other mathematical entities.
+
+      History
+      The design of LISP is based on functional programming. At the same time it allows to perform side effects.
+
+      LISP don't have the notion of a procedure. Thu, there is a distinction made that those functins with these side effects are impure.
+
+      Benefits
+      a. Easier to reason about.
+      b. Pure functions don't have side effects. They can only influence the behaviour of a program  
+         through their output.
+      c. The output is determninistic (it can reliably be calculated using only the input values).
+      	 Pure function will always preserve refrential transparency.
+      d. Explicit depeddencies (transparent), self-contained.
+      e. May increase program's performance.
+
+
+3. Refrential Transparency
+Ans: Absence of side effect is necessry, but not sufficient, consdition for refrential transparency.
+	
+	const today = () => new Date();
+    console.log(today())
+
+    Refrential transparency means that an expression can be replaced with it's value. The expression must be pure (deterministic and without side effects)
+
+    NOTE: A function invocation is an expression!
+
+
+4. Pure Function Programming Language
+Ans: The programs of functional languages are "expressions" and computation proceeds by evaluating 
+	 expressions while imperative expressions have assignment statements.
+
+	 The language of arithmetical expressions:
+
+	 (1 + 7) * (2 + 4) * (4 + 3)
+	    8    * (2 + 4) * (4 + 3)
+	    8    *    6    * (4 + 3)
+	    8    *    6    *    7
+	         48   *    7
+	             336
+
+	Evaluation: rewriting the given expression in accordancewith certain rules.
+
+	const width = 1 + 7;
+	const height = 2 + 4;
+	const depth = 4 + 3;
+
+	const r = width * height * depth
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Memoization
+
+It is an optimization technique (and not a pattern).
+Memoization consists of storing function results instead of recomputing it each time. It is a 'cache' for function invocation.
+
+Since function results are cached, they can be returnedimmediately when given
+function is invoke with same arguments: we remember the result of that fucntion for given arguments.
+
+1. Examples
+   
+   const sum = (a, b) => a + b;
+
+   console.log(sum(2, 7))
+   console.log(sum(2, 7))
+
+   const cache = {
+   		"2 7": 9
+   }
+
+2. Complexity
+   
+   Memoization requires additional memory as we store functions results in the cache. This introduces some additional complexity to our program.
+
+   It makes sense to use memoization for functions that are computationally expensive, ie. the function that takes sustantial time to compute their result.
+
+   A function can be memoized if it is referentially transparent
