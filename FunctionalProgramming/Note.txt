@@ -44,7 +44,7 @@ Ans: function compute(x, y) {
 	 	   The extra parameters are ignored while the missing ones are set to undefined
 
 5. Hoisting
-Ans:
+Ans:	
 	Functions (and variables defined with 'var') are put into the memory during the compilation phase. 
 	This way, these functions can be executed from anywhere, even in the place before the actual definition.
 
@@ -307,3 +307,175 @@ function is invoke with same arguments: we remember the result of that fucntion 
    It makes sense to use memoization for functions that are computationally expensive, ie. the function that takes sustantial time to compute their result.
 
    A function can be memoized if it is referentially transparent
+
+
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Higher Order Function
+
+HOF are functions that one can be passed as input to other functions or two can returned from other functions as output.
+
+1. Example
+   
+   a. Passing fucntion as input
+
+	   const profile = fn => {
+	   	consolr.log("Started at ${Date()}")
+	   	const result = fn();
+	   	console.log("Computing: ${result}")
+	   	console.log("End at ${Date()}")
+	   }
+
+	   const compute = (x, y) => x + y;
+
+	   profile(compute);
+	   //profile(compute(2, 3));
+
+	   //Output
+	   Started at .....
+	   Computing: NaN		// Because ewe haven't pass any argument at line 332
+	   End at .....
+
+   b. Returning Functions as Output
+
+   	   const profile = fn => {
+
+   	   	return (...args) => {
+   	   		consolr.log("Started at ${Date()}")
+		   	const result = fn();
+		   	console.log("Computing: ${result}")
+		   	console.log("End at ${Date()}")
+   	   	}
+	   	
+	   }
+
+	   const compute = (x, y) => x + y;
+
+	   profile(compute)(2, 3);
+
+	   //Output
+	   Started at .....
+	   Computing: 5		
+	   End at .....
+
+   c. Creating Abstraction with Functions
+
+   		const isLargerThan = value => {
+   			return (number) => {
+   				return number > value;
+   			}
+   		}
+
+   		//OR
+   		//const isLagerThan = value => number => number > value;
+
+   		const isLargerThan10 = isLargerThan(10);
+   		const isLargerThan100 = isLargerThan(100);
+   		const result = isLargerThan10(4);
+   		console.log(result);
+
+   		//Output
+   		false
+
+   	Abstraction hide details. Abstraction provide a higher level (or more abstract) of thinking.
+
+
+   	d. Sorting numbers
+
+   		const arr = [11, 22, 1, 4, 2, 7]
+
+   		const numericalOrder = (a, b) => a - b;
+
+   		console.log(arr.sort(numericalOrder));
+
+   		//Output
+   		[1, 2, 4, 7, 11, 22]
+
+   		console.log(arr.sort())
+
+   		The sort method allows to abstract way the method of comparing individual elements.
+
+
+
+Predicates
+
+The term comes form mathematics. In programmingit refers to a function which returns either true or false
+
+	const numberP = value => !isNaN(value) && isFinite(value)
+	console.log(numberP("222a"))
+
+	//Output
+	false
+
+	There are some HOF that take predicates as input
+
+
+JS's filter() Array method
+
+	const people = [
+		{ name: 'Donald Knuth', born: 1938},
+		{ name: 'Vin Cerf', born: 1943},
+		{ name: 'Hal Abelson', born: 1947},
+		{ name: 'Alan Turing', born: 1912},
+		{ name: 'Jon van Neumann', born: 1903},
+		{ name: 'Thomas H. Cormen', born: 1956},
+		{ name: 'Peter Norvig', born: 1956},
+		{ name: 'Jon Bantley', born: 1953},
+		{ name: 'Grady Booch', born: 1955},
+		{ name: 'Randal Bryant', born: 1952}
+	]
+
+	const result = []
+
+	for(let item in people) {
+		if(item.born > 1945) {
+			result.push(item);
+		}
+	}
+
+	console.log(result);
+
+
+	const filter = () => {
+		const result1 = [];
+
+		for(let item in people) {
+			if(item.born > 1945) {
+				result1.push(item);
+			}
+		}
+
+		return result1;
+	}
+
+	console.log(result1)
+
+	const filter = (predicate, collection) => {
+		const result1 = [];
+
+		for(let item in collection) {
+			if(predicate(item)) {
+				result1.push(item);
+			}
+		}
+
+		return result1;
+	}
+
+	const bornAfterThe2ndWarP = item => item.born > 1955;
+	
+	const r = filter(bornAfterThe2ndWarP, people)
+
+	const r2 = people.filter(bornAfterThe2ndWarP);
+
+	console.log(r)
+	console.log(r2)
+
+	//both are same
+
+	The filter() method in JS is used to extract the items from an array based on a collection provided in a form of a predicte as input.
+
+	We use predicates to define conditions for the filtering process.
+
+	We use predicates to decide whether or not to keep each item in or not.
